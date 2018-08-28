@@ -8,7 +8,7 @@ help:
 
 setup:
 	npm install
-	elm-make
+	elm make
 
 test:
 	npm test

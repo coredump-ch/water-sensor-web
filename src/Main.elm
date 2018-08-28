@@ -1,4 +1,4 @@
-module Main exposing (..)
+module Main exposing (Flags, init, main, subscriptions, update)
 
 import Api
 import Date exposing (toTime)
@@ -10,7 +10,6 @@ import MapPort
 import Maybe.Extra
 import Messages exposing (..)
 import Models exposing (Model, Route(..))
-import Navigation
 import Navigation exposing (Location)
 import Routing exposing (parseLocation)
 import Task
@@ -46,19 +45,19 @@ init flags location =
         currentRoute =
             parseLocation location
     in
-        ( { route = currentRoute
-          , map = map
-          , sensors = []
-          , selectedSensor = Nothing
-          , sponsors = Dict.empty
-          , apiToken = flags.apiToken
-          , now = Nothing
-          }
-        , Cmd.batch
-            [ MapPort.initializeMap map
-            , Task.perform TimeUpdate Time.now
-            ]
-        )
+    ( { route = currentRoute
+      , map = map
+      , sensors = []
+      , selectedSensor = Nothing
+      , sponsors = Dict.empty
+      , apiToken = flags.apiToken
+      , now = Nothing
+      }
+    , Cmd.batch
+        [ MapPort.initializeMap map
+        , Task.perform TimeUpdate Time.now
+        ]
+    )
 
 
 
@@ -90,7 +89,7 @@ update msg model =
                         NotFoundRoute ->
                             Cmd.none
             in
-                ( { model | route = newRoute }, cmd )
+            ( { model | route = newRoute }, cmd )
 
         MapInitialized _ ->
             ( model, Api.loadSensors model.apiToken )
@@ -107,14 +106,14 @@ update msg model =
                     -- TODO
                     Debug.log "Error while fetching data" error
             in
-                ( model, Cmd.none )
+            ( model, Cmd.none )
 
         SponsorLoaded ( sponsorId, Ok sponsor ) ->
             let
                 updatedSponsors =
                     Dict.insert sponsorId sponsor model.sponsors
             in
-                ( { model | sponsors = updatedSponsors }, Cmd.none )
+            ( { model | sponsors = updatedSponsors }, Cmd.none )
 
         SponsorLoaded ( sponsorId, Err error ) ->
             let
@@ -122,7 +121,7 @@ update msg model =
                     -- TODO
                     Debug.log "Error while fetching sponsor" error
             in
-                ( model, Cmd.none )
+            ( model, Cmd.none )
 
         MeasurementsLoaded ( sensorId, Ok measurements ) ->
             let
@@ -141,20 +140,20 @@ update msg model =
                                 updatedSensor =
                                     { sensor | historicMeasurements = Just sortedMeasurements }
                             in
-                                { model | selectedSensor = Just updatedSensor }
+                            { model | selectedSensor = Just updatedSensor }
 
                         Nothing ->
                             model
             in
-                ( updatedModel, Cmd.none )
+            ( updatedModel, Cmd.none )
 
         MeasurementsLoaded ( sensorId, Err error ) ->
             let
                 _ =
                     -- TODO
-                    Debug.log ("Error while fetching measurements for sensor " ++ (toString sensorId)) error
+                    Debug.log ("Error while fetching measurements for sensor " ++ toString sensorId) error
             in
-                ( model, Cmd.none )
+            ( model, Cmd.none )
 
         MapDragged pos ->
             let
@@ -168,7 +167,7 @@ update msg model =
                         , zoom = pos.zoom
                     }
             in
-                ( { model | map = newMap }, Cmd.none )
+            ( { model | map = newMap }, Cmd.none )
 
         SensorClicked (Just jsSensor) ->
             let
@@ -189,7 +188,7 @@ update msg model =
                             Cmd.none
 
                 cmdSponsor =
-                    case (Maybe.map .sponsorId selectedSensor) of
+                    case Maybe.map .sponsorId selectedSensor of
                         Just (Just sponsorId) ->
                             Api.loadSponsor model.apiToken sponsorId
 
@@ -199,7 +198,7 @@ update msg model =
                 cmd =
                     Cmd.batch [ cmdMeasurements, cmdSponsor ]
             in
-                ( { model | selectedSensor = selectedSensor }, cmd )
+            ( { model | selectedSensor = selectedSensor }, cmd )
 
         SensorClicked Nothing ->
             ( { model | selectedSensor = Nothing }, Cmd.none )

@@ -1,7 +1,8 @@
-port module MapPort exposing (..)
+port module MapPort exposing (initializeMap, mapInitialized, mapMoved, moveMap, sensorClicked, sensorsLoaded)
 
 import Map
 import Models
+
 
 
 -- Outgoing Port

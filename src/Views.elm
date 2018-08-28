@@ -1,16 +1,14 @@
 module Views exposing (view)
 
-import Charts exposing (temperatureChart)
 import Css exposing (..)
 import Css.Foreign as Foreign
 import Css.Reset
 import Dict
 import Helpers exposing (formatTemperature)
-import Html.Styled exposing (Html, fromUnstyled)
-import Html.Styled exposing (h1, h2, h3, h4, h5, h6, div, p, text, a, img, strong, footer)
-import Html.Styled.Attributes as Attr exposing (id, class, css, src, href)
+import Html.Styled exposing (Html, a, div, footer, fromUnstyled, h1, h2, h3, h4, h5, h6, img, p, strong, text)
+import Html.Styled.Attributes as Attr exposing (class, css, href, id, src)
 import Messages exposing (..)
-import Models exposing (Model, Sensor, Sponsor, Route(..))
+import Models exposing (Model, Route(..), Sensor, Sponsor)
 import Routing
 import Time exposing (Time)
 
@@ -137,6 +135,7 @@ pluralize : String -> String -> Int -> String
 pluralize singular plural quantity =
     if quantity == 1 then
         singular
+
     else
         plural
 
@@ -148,7 +147,7 @@ mapView model =
     page
         ("Finde die aktuelle und historische Wassertemperatur an "
             ++ (model.sensors |> List.length |> toString)
-            ++ (pluralize " Standort" " Standorten" (model.sensors |> List.length))
+            ++ pluralize " Standort" " Standorten" (model.sensors |> List.length)
             ++ " rund um den Zürichsee!"
         )
         [ div [ css [ position absolute, top (px 8), right (px 8) ] ]
@@ -247,10 +246,9 @@ sensorDescription now sensor sponsor =
             -- Extract and show caption
             (Maybe.map
                 (\s ->
-                    (p
+                    p
                         [ css [ fontStyle normal ] ]
                         [ text s ]
-                    )
                 )
                 sensor.caption
             )
@@ -264,10 +262,9 @@ sensorDescription now sensor sponsor =
             -- Extract and show last measurement
             (Maybe.map
                 (\measurement ->
-                    (p
+                    p
                         [ css [ fontStyle normal ] ]
                         [ text (measurement.temperature |> toString |> formatTemperature) ]
-                    )
                 )
                 sensor.lastMeasurement
             )
@@ -287,8 +284,6 @@ sensorDescription now sensor sponsor =
                                 [ css [ fontStyle italic ] ]
                                 [ text "No recent measurements" ]
 
-                        mm ->
-                            fromUnstyled <| temperatureChart now mm
                 )
                 sensor.historicMeasurements
             )

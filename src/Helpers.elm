@@ -8,7 +8,7 @@ primitiveRound val digits =
             Just t
 
         [ integer, fractional ] ->
-            Just <| integer ++ "." ++ (String.left 2 fractional)
+            Just <| integer ++ "." ++ String.left 2 fractional
 
         _ ->
             Nothing

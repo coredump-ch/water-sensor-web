@@ -3,7 +3,10 @@
 -- MIT licensed
 
 
-module Css.Reset exposing (css, snippets)
+module Css.Reset exposing
+    ( css
+    , snippets
+    )
 
 {-| This library is mostly a direct port of [normalize.css](https://github.com/necolas/normalize.css).
 Compile it with your elm-css code to have easier cross-browser styling experience.
@@ -50,16 +53,15 @@ include this stylesheet in your elm-css compilation file.
 
 
     {- Helper function to compile many stylesheets -}
-
     compileMany : List Css.Stylesheet -> { warnings : List String, css : String }
     compileMany styles =
         let
             results =
                 List.map Css.compile styles
         in
-            { warnings = List.concatMap .warnings results
-            , css = String.join "\n\n" (List.map .css results)
-            }
+        { warnings = List.concatMap .warnings results
+        , css = String.join "\n\n" (List.map .css results)
+        }
 
     main : Program Never
     main =

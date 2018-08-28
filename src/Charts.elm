@@ -55,63 +55,67 @@ temperatureChart now measurements =
                             (timestamp - toTime measurement.createdAt)
                                 |> Time.inHours
                     in
-                        if hoursOfData > 60 then
-                            5
-                        else if hoursOfData > 48 then
-                            4
-                        else if hoursOfData > 36 then
-                            3
-                        else if hoursOfData > 24 then
-                            2
-                        else
-                            1
+                    if hoursOfData > 60 then
+                        5
+
+                    else if hoursOfData > 48 then
+                        4
+
+                    else if hoursOfData > 36 then
+                        3
+
+                    else if hoursOfData > 24 then
+                        2
+
+                    else
+                        1
 
                 _ ->
                     0
     in
-        LineChart.viewCustom
-            { y =
-                Axis.custom
-                    { title = Title.default ""
-                    , variable = Just << .temperature
-                    , pixels = 300
-                    , range = Range.padded 20 20
-                    , axisLine =
-                        AxisLine.custom <|
-                            \dataRange axisRange ->
-                                { color = Colors.grayLight
-                                , width = 3
-                                , events = []
-                                , start = dataRange.min
-                                , end = dataRange.max
-                                }
-                    , ticks = Ticks.default
-                    }
-            , x =
-                Axis.custom
-                    { title = Title.default ""
-                    , variable = Just << toTime << .createdAt
-                    , pixels = 500
-                    , range = range
-                    , axisLine = AxisLine.none
-                    , ticks = Ticks.time tickCount
-                    }
-            , container =
-                Container.custom
-                    { attributesHtml = []
-                    , attributesSvg = []
-                    , size = Container.relative
-                    , margin = Container.Margin 10 10 60 50
-                    , id = "line-chart-30d"
-                    }
-            , interpolation = Interpolation.default
-            , intersection = Intersection.default
-            , legends = Legends.none
-            , events = Events.default
-            , junk = Junk.default
-            , grid = Grid.lines 0.75 Colors.grayLight
-            , area = Area.default
-            , line = Line.wider 2
-            , dots = Dots.custom (Dots.full 0)
-            }
-            [ LineChart.line Colors.blue Dots.circle "Temperature" measurements ]
+    LineChart.viewCustom
+        { y =
+            Axis.custom
+                { title = Title.default ""
+                , variable = Just << .temperature
+                , pixels = 300
+                , range = Range.padded 20 20
+                , axisLine =
+                    AxisLine.custom <|
+                        \dataRange axisRange ->
+                            { color = Colors.grayLight
+                            , width = 3
+                            , events = []
+                            , start = dataRange.min
+                            , end = dataRange.max
+                            }
+                , ticks = Ticks.default
+                }
+        , x =
+            Axis.custom
+                { title = Title.default ""
+                , variable = Just << toTime << .createdAt
+                , pixels = 500
+                , range = range
+                , axisLine = AxisLine.none
+                , ticks = Ticks.time tickCount
+                }
+        , container =
+            Container.custom
+                { attributesHtml = []
+                , attributesSvg = []
+                , size = Container.relative
+                , margin = Container.Margin 10 10 60 50
+                , id = "line-chart-30d"
+                }
+        , interpolation = Interpolation.default
+        , intersection = Intersection.default
+        , legends = Legends.none
+        , events = Events.default
+        , junk = Junk.default
+        , grid = Grid.lines 0.75 Colors.grayLight
+        , area = Area.default
+        , line = Line.wider 2
+        , dots = Dots.custom (Dots.full 0)
+        }
+        [ LineChart.line Colors.blue Dots.circle "Temperature" measurements ]

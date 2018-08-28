@@ -1,9 +1,9 @@
-module Models exposing (..)
+module Models exposing (JsMeasurement, JsSensor, Measurement, Model, Route(..), Sensor, Sponsor)
 
 import Date exposing (Date)
+import Dict exposing (Dict)
 import Map
 import Time
-import Dict exposing (Dict)
 
 
 type alias Model =

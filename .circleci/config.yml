@@ -2,12 +2,12 @@ version: 2
 jobs:
   build:
     docker:
-      - image: codesimple/elm:0.18
+      - image: codesimple/elm:0.19
     steps:
       - checkout
       - restore_cache:
           keys:
-            - v3-cache-{{ arch }}-{{ .Branch }}-{{ checksum "package-lock.json" }}-{{ checksum "elm-package.json" }}-{{ checksum "tests/elm-package.json" }}
+            - v3-cache-{{ arch }}-{{ .Branch }}-{{ checksum "package-lock.json" }}-{{ checksum "elm.json" }}-{{ checksum "tests/elm.json" }}
       - run:
           name: Install sysconfcpus to fix core count detection
           command: |

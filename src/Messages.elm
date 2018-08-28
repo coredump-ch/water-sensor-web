@@ -1,4 +1,4 @@
-module Messages exposing (..)
+module Messages exposing (Msg(..))
 
 import Http
 import Map

@@ -1,15 +1,14 @@
-module Routing
-    exposing
-        ( parseLocation
-        , mapPath
-        , aboutPath
-        , githubPath
-        , coredumpPath
-        )
+module Routing exposing
+    ( aboutPath
+    , coredumpPath
+    , githubPath
+    , mapPath
+    , parseLocation
+    )
 
 import Models exposing (Route(..))
 import Navigation exposing (Location)
-import UrlParser exposing (Parser, oneOf, parseHash, map, top, s)
+import UrlParser exposing (Parser, map, oneOf, parseHash, s, top)
 
 
 matchers : Parser (Route -> a) a
@@ -22,7 +21,7 @@ matchers =
 
 parseLocation : Location -> Route
 parseLocation location =
-    case (parseHash matchers location) of
+    case parseHash matchers location of
         Just route ->
             route
 
